@@ -65,6 +65,27 @@ app.post("/compose", function(req, res) {
   res.redirect("/");
 });
 
+app.get("/posts/:postTitle", function(req, res) {
+  res.render("home", {
+    posts,
+    homeContent: homeStartingContent
+  });
+
+  const reqTitle = req.params.postTitle;
+
+  posts.forEach(function(post){
+    const storedTitle = post.title;
+    console.log(storedTitle);
+
+    if (storedTitle === reqTitle) {
+      console.log("Founded match !");
+    } else {
+      console.log("Doesn't exist !");
+    }
+  });
+
+});
+
 
 
 app.listen(port, function() {
