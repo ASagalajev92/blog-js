@@ -3,6 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const _ = require('lodash');
 
 const port = 3000;
 
@@ -19,6 +20,14 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+//-----    TRUNCATE function   -----//
+function truncateString(str, num) {
+  if (str.length <= num) {
+    return str
+  }
+  return str.slice(0, num) + '...'
+}
 
 app.use(express.static("public"));
 
@@ -66,25 +75,26 @@ app.post("/compose", function(req, res) {
 });
 
 app.get("/posts/:postTitle", function(req, res) {
-  res.render("home", {
-    posts,
-    homeContent: homeStartingContent
-  });
 
-  const reqTitle = req.params.postTitle;
+  const reqTitle = _.lowerCase(req.params.postTitle);
 
   posts.forEach(function(post){
-    const storedTitle = post.title;
-    console.log(storedTitle);
+    const storedTitle = _.lowerCase(post.title);
+    const storedBody = post.content;
 
     if (storedTitle === reqTitle) {
-      console.log("Founded match !");
-    } else {
-      console.log("Doesn't exist !");
+      res.render("post", {
+        posts,
+        storedTitle,
+        storedBody
+      });
     }
+
   });
 
 });
+
+
 
 
 
