@@ -13,6 +13,7 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 
 const posts = [];
 
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -20,14 +21,6 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-
-//-----    TRUNCATE function   -----//
-function truncateString(str, num) {
-  if (str.length <= num) {
-    return str
-  }
-  return str.slice(0, num) + '...'
-}
 
 app.use(express.static("public"));
 
@@ -78,7 +71,7 @@ app.get("/posts/:postTitle", function(req, res) {
 
   const reqTitle = _.lowerCase(req.params.postTitle);
 
-  posts.forEach(function(post){
+  posts.forEach(function(post) {
     const storedTitle = _.lowerCase(post.title);
     const storedBody = post.content;
 
@@ -93,9 +86,6 @@ app.get("/posts/:postTitle", function(req, res) {
   });
 
 });
-
-
-
 
 
 app.listen(port, function() {
